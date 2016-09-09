@@ -853,6 +853,17 @@ defmodule ExAws.S3 do
     end
   end
 
+  @doc """
+  Generates a presigned POST request that can be used for uploading an object.
+  """
+  @spec presigned_post(%{}, binary, binary, keyword) :: {:ok, binary} | {:error, binary}
+  def presigned_post(config, bucket_name, key, opts \\ []) do
+    presigned_post = ExAws.Auth.PresignedPosts.generate_presigned_post(
+      config, bucket_name, key, opts)
+
+    {:ok, presigned_post}
+  end
+
   defp url_to_sign(bucket, object, config, virtual_host) do
     object = ensure_slash(object)
     case virtual_host do
